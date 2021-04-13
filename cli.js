@@ -123,8 +123,7 @@ socket.on('my response', function (msg) {
             return;
         }
 
-        text = decodeURI(code.decryptMessage(msg.user_name, password)) + ': ' + code.decryptMessage(msg.message, password).toString();
-        console.log(text);
+        console.log(decodeURI(code.decryptMessage(msg.user_name, password)) + ': ' + code.decryptMessage(msg.message, password).toString());
     }
 });
 
@@ -132,7 +131,7 @@ function leaveRoom() {
     // on tab close, broadcast to the room
 
     socket.emit('chat event', JSON.parse({
-        "user_name": code.encryptMessage(user_name, password),
+        "user_name": code.encryptMessage(username, password),
         "message": code.encryptMessage('has left the room.', password)
     }));
 }
