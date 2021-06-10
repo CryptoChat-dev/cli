@@ -9,12 +9,12 @@ install:
 	@mkdir -p $(BINDIR)
 	@mkdir -p $(DOCDIR)
 	@mkdir -p $(LIBDIR)
-	@cp -pR node_modules $(LIBDIR)/node_modules
-	@cp -p package.json $(LIBDIR)/package.json
-	@cp -p cli.js $(LIBDIR)/cli.js
-	@cp -p .env $(LIBDIR)/.env
-	@cp -p cryptochat $(BINDIR)/cryptochat
-	@cp -p README.md $(DOCDIR)
+	@cp -R node_modules $(LIBDIR)/node_modules
+	@cp package.json $(LIBDIR)/package.json
+	@cp cli.js $(LIBDIR)/cli.js
+	@cp .env $(LIBDIR)/.env
+	@cp cryptochat $(BINDIR)/cryptochat
+	@cp README.md $(DOCDIR)
 	@chmod 755 $(BINDIR)/cryptochat
 	@chown root:root -R $(LIBDIR)
 	@chmod 755 -R $(LIBDIR)
