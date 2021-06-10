@@ -15,8 +15,7 @@ var roomName;
 let socket;
 const initiateSocket = (room) => {
     socket = io(process.env.API);
-    var roomName = CryptoJS.SHA512(room).toString();
-    socket.emit('join', roomName)
+    socket.emit('join', room)
 }
 
 getUsername();
@@ -33,21 +32,22 @@ function getPassword() {
         password = answer;
         roomName = CryptoJS.SHA512(password).toString();
         initiateSocket(roomName)
+        console.log(`\n[CLI] Connected to CryptoChat.\n`)
 
         socket.emit('chat event', {
             "roomName": roomName,
             "user_name": crypt.encryptMessage(username, password),
             "message": crypt.encryptMessage('has joined the room.', password)
         });
-
+        
         socket.on('my response', incomingHandler);
-        chat();
+
+        setTimeout(() => chat(), 1500);
     });
 }
 
-
 function chat() {
-    lineReader.question(`${username}: `, (answer) => {
+    lineReader.question(`--- [${username}]: `, (answer) => {
         if (answer == '/exit') {
             leaveAndReload();
             return;
@@ -80,30 +80,25 @@ function sendMessage(message) {
     });
 }
 
-
 function incomingHandler(msg) {
-    var decryptedUsername;
-    var decryptedMessage;
-    decryptedUsername = crypt.decryptMessage(msg.user_name, state.key);
-    decryptedMessage = crypt.decryptMessage(msg.message, state.key);
+    readline.clearLine(process.stdout, 0)
+    readline.cursorTo(process.stdout, 0, null)
+    var decryptedUsername = crypt.decryptMessage(msg.user_name, password);
+    var decryptedMessage = crypt.decryptMessage(msg.message, password);
     if (decryptedUsername !== '' || decryptedMessage !== '') { // if the username and message are empty values, stop
-        console.log(`${decryptedUsername}: ${decryptedMessage}`);
+        console.log(`[${decryptedUsername}]: ${decryptedMessage}`);
+        chat();
     } else {
         var time = new Date();
         console.log(`[${time}] Could not decrypt: ${msg}`);
     }
 }
 
-function leaveRoom() { // on tab close, broadcast to the room
-
-    socket.emit('chat event', JSON.parse({
+function leaveAndReload() {
+    socket.emit('chat event', JSON.parse(JSON.stringify({
         "roomName": roomName,
         "user_name": crypt.encryptMessage(username, password),
         "message": crypt.encryptMessage('has left the room.', password)
-    }));
-}
-
-function leaveAndReload() {
-    leaveRoom();
-    process.exit(0);
+    })));
+    setTimeout(() => process.exit(0), 1500)
 }
