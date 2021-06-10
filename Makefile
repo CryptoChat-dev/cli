@@ -16,6 +16,10 @@ install:
 	@cp -p cryptochat $(BINDIR)/cryptochat
 	@cp -p README.md $(DOCDIR)
 	@chmod 755 $(BINDIR)/cryptochat
+	@chown root:root -R $(LIBDIR)
+	@chmod 755 -R $(LIBDIR)
+	@chown root:root $(DOCDIR)
+	@chmod 755 $(DOCDIR)
 	@echo Installed!
 
 uninstall:
