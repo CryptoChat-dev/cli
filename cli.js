@@ -4,6 +4,11 @@ const CryptoJS = require('crypto-js');
 const io = require('socket.io-client');
 const readline = require('readline');
 const dotenv = require('dotenv').config();
+const eff = require('./eff.js');
+const crypto = require('crypto');
+// Files
+
+// Code
 
 const lineReader = readline.createInterface({input: process.stdin, output: process.stdout});
 
@@ -16,11 +21,10 @@ let socket;
 const initiateSocket = (room) => {
     socket = io(process.env.API);
     socket.emit('join', room)
-}
-
+} 
 getUsername();
 
-function getUsername() {
+function getUsername() { // console.log()
     lineReader.question('Username: ', (answer) => {
         username = answer;
         getPassword();
@@ -28,8 +32,14 @@ function getUsername() {
 }
 
 function getPassword() {
-    lineReader.question('Room Key: ', (answer) => {
-        password = answer;
+    lineReader.question('\n[i] Use "/random" to generate a key.\nRoom Key: ', (answer) => {
+        if (answer === '/random') {
+            password = getRandomWords();
+            console.log(`\n[CLI] Room Key: ${password}`)
+        } else {
+            password = answer;
+        }
+
         roomName = CryptoJS.SHA512(password).toString();
         initiateSocket(roomName)
         console.log(`\n[CLI] Connected to CryptoChat.\n`)
@@ -39,7 +49,7 @@ function getPassword() {
             "user_name": crypt.encryptMessage(username, password),
             "message": crypt.encryptMessage('has joined the room.', password)
         });
-        
+
         socket.on('my response', incomingHandler);
 
         setTimeout(() => chat(), 1500);
@@ -57,6 +67,20 @@ function chat() {
         }
         chat();
     });
+}
+
+function getRandomWords() {
+    var wordList = new Array;
+    for (var x = 0; x < 6; x++) {
+        var numList = new Array;
+        for (var y = 0; y < 5; y++) {
+            var num = crypto.randomInt(1, 6);
+            numList.push(num);
+        }
+        var joinedNum = Number(numList.join(''));
+        wordList.push(eff.wordList[joinedNum].charAt(0).toUpperCase() + eff.wordList[joinedNum].slice(1));
+    }
+    return wordList.join('')
 }
 
 let crypt = {
