@@ -3,7 +3,7 @@ DOCDIR ?= /usr/local/share/doc/cryptochat
 LIBDIR ?= /var/lib/cryptochat
 
 all:
-	@echo Run \'make install\' to install cryptochat, and \'make uninstall'\ to uninstall.
+	@echo Run \'make install'\ to install cryptochat, and \'make uninstall'\ to uninstall.
 
 install:
 	@mkdir -p $(BINDIR)
