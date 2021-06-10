@@ -8,7 +8,7 @@ All data sent over the Internet is end-to-end encrypted with AES-256 bit encrypt
 
 ## Requirements
 
-+ nodejs. can be easily installed using [nvm](https://github.com/nvm-sh/nvm).
++ nodejs, which can be easily installed using [nvm](https://github.com/nvm-sh/nvm).
 + make, if you want to use the makefile. 
 
 ## Installation
