@@ -7,7 +7,7 @@ err() {
 }
 
 checks() {
-	if [ -z $(which node) ]; then
+	if [ -z "$(which node)" ]; then
 		err "node isn't installed.\nyou can easily acquire it using https://github.com/nvm-sh/nvm.\n"
 		exit 1;
 	elif [[ ! -d "$LIBDIR" ]]; then
