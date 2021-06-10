@@ -3,24 +3,24 @@
 LIBDIR='/var/lib/cryptochat'
 
 err() {
-	printf "\e[0;91m%s\n" "${@}" 1>&2;
+  printf "\e[0;91m%s\n" "${@}" 1>&2
 }
 
 checks() {
-	if [ -z "$(which node)" ]; then
-		err "node isn't installed.\nyou can easily acquire it using https://github.com/nvm-sh/nvm.\n"
-		exit 1;
-	elif [[ ! -d "$LIBDIR" ]]; then
-		err "$LIBDIR doesn't exist. did you install using the makefile?"
-		exit 1;
-	fi
+  if [ -z "$(which node)" ]; then
+    err "node isn't installed.\nyou can easily acquire it using https://github.com/nvm-sh/nvm.\n"
+    exit 1
+  elif [[ ! -d "$LIBDIR" ]]; then
+    err "$LIBDIR doesn't exist. did you install using the makefile?"
+    exit 1
+  fi
 }
 
 run() {
-	(
-	source "$LIBDIR/.env" || exit "${?}"	
-	cd "$LIBDIR" && node ./cli.js || exit "${?}"
-	)
+  (
+    source "$LIBDIR/.env" || exit "${?}"
+    cd "$LIBDIR" && node ./cli.js || exit "${?}"
+  )
 }
 
 checks || exit "${?}"
