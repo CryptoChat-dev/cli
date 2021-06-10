@@ -25,3 +25,5 @@ run() {
 
 checks || exit "${?}"
 run
+
+# fuck you bot
