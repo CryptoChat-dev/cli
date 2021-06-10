@@ -12,6 +12,7 @@ install:
 	@cp -R node_modules $(LIBDIR)/node_modules
 	@cp package.json $(LIBDIR)/package.json
 	@cp cli.js $(LIBDIR)/cli.js
+	@cp eff.js $(LIBDIR)/eff.js
 	@cp .env $(LIBDIR)/.env
 	@cp cryptochat $(BINDIR)/cryptochat
 	@cp README.md $(DOCDIR)
